@@ -1,0 +1,14 @@
+C:\Users\Stephen\OneDrive\Desktop\bot\bin\Debug\net8.0\bot.exe
+C:\Users\Stephen\OneDrive\Desktop\bot\bin\Debug\net8.0\bot.deps.json
+C:\Users\Stephen\OneDrive\Desktop\bot\bin\Debug\net8.0\bot.runtimeconfig.json
+C:\Users\Stephen\OneDrive\Desktop\bot\bin\Debug\net8.0\bot.dll
+C:\Users\Stephen\OneDrive\Desktop\bot\bin\Debug\net8.0\bot.pdb
+C:\Users\Stephen\OneDrive\Desktop\bot\obj\Debug\net8.0\bot.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Stephen\OneDrive\Desktop\bot\obj\Debug\net8.0\bot.AssemblyInfoInputs.cache
+C:\Users\Stephen\OneDrive\Desktop\bot\obj\Debug\net8.0\bot.AssemblyInfo.cs
+C:\Users\Stephen\OneDrive\Desktop\bot\obj\Debug\net8.0\bot.csproj.CoreCompileInputs.cache
+C:\Users\Stephen\OneDrive\Desktop\bot\obj\Debug\net8.0\bot.dll
+C:\Users\Stephen\OneDrive\Desktop\bot\obj\Debug\net8.0\refint\bot.dll
+C:\Users\Stephen\OneDrive\Desktop\bot\obj\Debug\net8.0\bot.pdb
+C:\Users\Stephen\OneDrive\Desktop\bot\obj\Debug\net8.0\bot.genruntimeconfig.cache
+C:\Users\Stephen\OneDrive\Desktop\bot\obj\Debug\net8.0\ref\bot.dll
