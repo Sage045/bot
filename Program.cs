@@ -1,87 +1,64 @@
 ﻿using System;
+using System.Threading;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
 class Program
 {
-    static ITelegramBotClient bot;
+    static TelegramBotClient bot;
 
-    static void Main()
+    static void Main(string[] args)
     {
-        // 🔐 Your bot token
         bot = new TelegramBotClient("7822764030:AAFoyIwadcsRHQzIOXnsdGsxbBAVoMIv0qw");
 
-        // 🌐 TEMPORARY: SSL bypass for local dev
-        System.Net.ServicePointManager.ServerCertificateValidationCallback +=
-            (sender, cert, chain, sslPolicyErrors) => true;
-
-        // 📨 Message listener
         bot.OnMessage += Bot_OnMessage;
-
-        // ▶️ Start receiving updates (polling)
         bot.StartReceiving();
-        Console.WriteLine("🤖 Bot is running. Press Enter to exit.");
-        Console.ReadLine();
 
-        // ⏹ Stop gracefully
-        bot.StopReceiving();
+        Console.WriteLine("🤖 Support Bot started. Press any key to exit.");
+        Console.ReadLine(); // Or Thread.Sleep(-1) if you prefer
     }
 
     static async void Bot_OnMessage(object sender, MessageEventArgs e)
     {
-        try
+        if (e.Message.Type != MessageType.Text) return;
+
+        var chatId = e.Message.Chat.Id;
+        var message = e.Message.Text?.ToLower();
+
+        if (message == "/start")
         {
-            if (e.Message?.Text == null)
-                return;
-
-            var chatId = e.Message.Chat.Id;
-            var messageText = e.Message.Text.ToLower();
-
-            Console.WriteLine($"📩 Received from {chatId}: {messageText}");
-
-            // Handle replies
-            switch (messageText)
+            var replyKeyboard = new ReplyKeyboardMarkup(new[]
             {
-                case "/start":
-                    var welcomeText = "👋 Welcome to Customer Care!\nChoose an option below:";
-                    var replyKeyboard = new ReplyKeyboardMarkup(new[]
-                    {
-                        new KeyboardButton[] { "💼 Billing", "📦 Orders" },
-                        new KeyboardButton[] { "🔧 Technical Support", "❌ Hide Menu" }
-                    })
-                    {
-                        ResizeKeyboard = true
-                    };
-                    await bot.SendTextMessageAsync(chatId, welcomeText, replyMarkup: replyKeyboard).ConfigureAwait(false);
-                    break;
+                new KeyboardButton[] { "📄 FAQs", "💬 Talk to support" },
+                new KeyboardButton[] { "ℹ️ Service info" }
+            })
+            {
+                ResizeKeyboard = true
+            };
 
-                case "💼 billing":
-                    await bot.SendTextMessageAsync(chatId, "💼 Billing support: Please describe your issue.").ConfigureAwait(false);
-                    break;
-
-                case "📦 orders":
-                    await bot.SendTextMessageAsync(chatId, "📦 Orders support: Please provide your order number.").ConfigureAwait(false);
-                    break;
-
-                case "🔧 technical support":
-                    await bot.SendTextMessageAsync(chatId, "🔧 Tech support: Tell us what you're experiencing.").ConfigureAwait(false);
-                    break;
-
-                case "❌ hide menu":
-                    var removeKeyboard = new ReplyKeyboardRemove();
-                    await bot.SendTextMessageAsync(chatId, "✅ Menu hidden. Type /start to bring it back.", replyMarkup: removeKeyboard).ConfigureAwait(false);
-                    break;
-
-                default:
-                    await bot.SendTextMessageAsync(chatId, "✅ Got it! A support agent will follow up soon.").ConfigureAwait(false);
-                    break;
-            }
+            await bot.SendTextMessageAsync(
+                chatId: chatId,
+                text: "👋 Welcome to SupportBot! How can I help you today?",
+                replyMarkup: replyKeyboard
+            );
         }
-        catch (Exception ex)
+        else if (message.Contains("faq"))
         {
-            Console.WriteLine("⚠️ Error handling message:");
-            Console.WriteLine(ex.ToString());
+            await bot.SendTextMessageAsync(chatId, "📄 FAQ:\n1. How to use the service?\n2. How to contact support?\n...");
+        }
+        else if (message.Contains("support"))
+        {
+            await bot.SendTextMessageAsync(chatId, "💬 A human agent will be with you shortly. Please describe your issue.");
+        }
+        else if (message.Contains("service"))
+        {
+            await bot.SendTextMessageAsync(chatId, "ℹ️ We offer 24/7 customer support and service monitoring.");
+        }
+        else
+        {
+            await bot.SendTextMessageAsync(chatId, $"📩 You said: {e.Message.Text}");
         }
     }
 }
